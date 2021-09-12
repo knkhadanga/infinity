@@ -339,6 +339,7 @@ public class BST {
         }
 
         Queue<Node> queue = new LinkedList<>();
+
         int height = 0;
 
         queue.add(root);
