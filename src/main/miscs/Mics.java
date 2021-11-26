@@ -32,10 +32,10 @@ public class Mics {
         //lengthOfLongestSubstring("kabcabcc");
         //int[] input = {1, 2, 1, 4, 5, 3, 2, 3, 7, 9, 4};
         //findDuplicatesInArray(input);
-        //MaximumPossibleValue(-109);
+        MaximumPossibleValue(-19);
 
         int[] sum = {1,-3,2,5,8};
-        subArrayWithMaxSum(sum);
+        //subArrayWithMaxSum(sum);
 
         //int[] input = {1, 2, 1, 2, 5, 5, 3, 3, 4};
         //elementAppearOnlyOnce(input);

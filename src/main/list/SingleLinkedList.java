@@ -165,9 +165,6 @@ public class SingleLinkedList {
         this.head = tempHead;
     }
 
-
-
-
     void removeDuplicateFromSortedList() {
         Node currentNode = head;
 
