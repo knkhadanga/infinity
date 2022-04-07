@@ -54,7 +54,7 @@ public class CombinationSum {
     static void backtrack(int[] input, int target, int start_index, List<Integer> current_list, List<List<Integer>> result) {
         if (target < 0) { //no further computation needed, return from here.
             return;
-        } else if (target == 0) { //terminal case - add curent list to final list
+        } else if (target == 0) { //terminal case - add current list to final list
             result.add(new ArrayList<>(current_list));
         } else {
             for (int i = start_index; i < input.length; i++) {

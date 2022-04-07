@@ -901,4 +901,91 @@ public class BST {
 
     }
 
+    /*
+    https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+    https://www.youtube.com/watch?v=vssbwPkarPQ
+    Given the root of a binary tree, flatten the tree into a "linked list":
+    * The "linked list" should use the same TreeNode class where the right child pointer
+      points to the next node in the list and the left child pointer is always null.
+
+    * The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+
+            1
+           / \
+         2     5    ----> 1-2-3-4-5-6
+        / \     \
+       3  4      6
+
+     */
+    void flatten_binary_tree(Node root) {
+        if (root == null) return;
+
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            Node current_node = stack.pop();
+            if (current_node.right != null) {
+                stack.push(current_node.right);
+            }
+
+            if (current_node.left != null) {
+                stack.push(current_node.left);
+            }
+
+            if (!stack.isEmpty()) {
+                current_node.right = stack.peek();
+            }
+
+            current_node.left = null;
+        }
+    }
+
+    /**
+     * https://leetcode.com/problems/serialize-and-deserialize-bst/
+     * https://www.youtube.com/watch?v=jFL-5h7ETPE
+     */
+    final String no_node = "N";
+    final String delimeter = ",";
+
+    Node serialize_deserialize_bst(Node root){
+        String tree = serialize_binary_tree(root);
+        return deserialize_binary_tree(tree);
+    }
+
+    String serialize_binary_tree(Node root) {
+        if (root == null) return null;
+        StringBuilder stb = new StringBuilder();
+        serialize_preorder(root, stb);
+        return stb.toString();
+    }
+
+    void serialize_preorder(Node root, StringBuilder stb) {
+        if (root == null) {
+            stb.append(no_node).append(delimeter);
+        } else {
+            stb.append(root.data).append(delimeter);
+            serialize_preorder(root.left, stb);
+            serialize_preorder(root.right, stb);
+        }
+    }
+
+    Node deserialize_binary_tree(String input) {
+        Queue<String> queue = new LinkedList<>(Arrays.asList(input.split(delimeter)));
+        return deserialize_helper(queue);
+    }
+
+    Node deserialize_helper(Queue<String> queue) {
+        String data = queue.remove();
+        if (data == no_node) {
+            return null;
+        } else {
+            Node root = new Node();
+            root.data = Integer.parseInt(data);
+            root.left = deserialize_helper(queue);
+            root.right = deserialize_helper(queue);
+            return root;
+        }
+    }
+
 }
