@@ -32,7 +32,7 @@ public class Mics {
         //lengthOfLongestSubstring("kabcabcc");
         //int[] input = {1, 2, 1, 4, 5, 3, 2, 3, 7, 9, 4};
         //findDuplicatesInArray(input);
-        MaximumPossibleValue(-19);
+        //MaximumPossibleValue(-19);
 
         int[] sum = {1,-3,2,5,8};
         //subArrayWithMaxSum(sum);
@@ -114,9 +114,56 @@ public class Mics {
         int[] array = {3, 1, 4, 1, 5};
        // findPairs(array, 2);
 
-        System.out.println(is_anagram("sad", "das"));
+        //System.out.println(is_anagram("sad", "das"));
+
+        int[] nums = {23,2,4,6,7};
+        System.out.println(checkSubarraySum(nums, 6));
+
     }
 
+    /*
+    https://www.youtube.com/watch?v=OKcrLfR-8mE
+    https://leetcode.com/problems/continuous-subarray-sum/
+
+    Given an integer array nums and an integer k, return true if nums has a continuous subarray
+    of size at least two whose elements sum up to a multiple of k, or false otherwise.
+
+    An integer x is a multiple of k if there exists
+    an integer n such that x = n * k. 0 is always a multiple of k.
+
+    Example 1:
+    Input: nums = [23,2,4,6,7], k = 6
+    Output: true
+    Explanation: [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.
+
+    Example 2:
+    Input: nums = [23,2,6,4,7], k = 6
+    Output: true
+    Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.
+    And 42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.
+     */
+    static boolean checkSubarraySum(int[] nums, int k) {
+
+        Map<Integer, Integer> map = new HashMap<>(); //to store reminder and index mapping
+        map.put(0, -1); //this will ensure, if first item is multiple of k, then this will take care of it
+
+        int total = 0;
+        for (int current_index = 0; current_index < nums.length; current_index++) {
+            total += nums[current_index];
+            int reminder = total % k;
+
+            if (!map.containsKey(reminder)) {
+                map.put(reminder, current_index);
+            } else {
+                int last_index = map.get(reminder);
+                if ((current_index - last_index) > 1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     /*
     Given an unsorted array of integers, find the length of longest increasing subsequence.
@@ -125,6 +172,7 @@ public class Mics {
 
     https://www.youtube.com/watch?time_continue=135&v=Ns4LCeeOFS4
     https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+    https://leetcode.com/problems/longest-increasing-subsequence/submissions/
      */
     static void longestIncreasingSubsequence(int[] array) {
         if (array == null || array.length == 0) {
@@ -443,6 +491,8 @@ public class Mics {
      * with the length of 3.
      * <p>
      * efficient approach
+     *
+     * https://leetcode.com/problems/longest-substring-without-repeating-characters/
      */
     public static void lengthOfLongestSubstring(String input, String dummy) {
         if (input == null || input.length() == 0) {
@@ -1006,7 +1056,7 @@ public class Mics {
   [4,5,6],
   [7,8,9]
 ],
-
+,
 rotate the input matrix in-place such that it becomes:
 [
   [7,4,1],
