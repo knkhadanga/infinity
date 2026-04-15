@@ -1,0 +1,19 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Logs/Build
+dist/
+*.log
+out/
+
+# Env
+.env
