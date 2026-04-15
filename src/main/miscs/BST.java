@@ -744,6 +744,8 @@ public class BST {
      * Check if the given binary tree is minimum heap.
      * https://www.techiedelight.com/check-binary-tree-is-min-heap/
      *
+     * A Min Heap Binary Tree is a Binary Tree where the root node has the minimum key in the tree.
+     * It is also a complete binary tree except the last level.
      * @return
      */
     boolean isMinHeap() {

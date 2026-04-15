@@ -176,7 +176,7 @@ public class Mics {
      */
     static void longestIncreasingSubsequence(int[] array) {
         if (array == null || array.length == 0) {
-            System.out.println("Length of continuous subseqence is 0");
+            System.out.println("Length of continuous subsequence is 0");
             return;
         }
 
@@ -218,7 +218,7 @@ public class Mics {
      */
     static void continuousIncreasingSubsequene(int[] array) {
         if (array == null || array.length == 0) {
-            System.out.println("Length of continuous subseqence is 0");
+            System.out.println("Length of continuous subsequence is 0");
             return;
         }
 
