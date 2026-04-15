@@ -150,6 +150,43 @@ public class MergeIntervals {
         return output.toArray(new int[output.size()][]);
     }
 
+
+    /*
+    https://leetcode.com/problems/insert-interval/description/
+    https://www.youtube.com/watch?v=NWM4e4yda0w&ab_channel=NareshGupta
+
+    You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent
+    the start and the end of the ith interval and intervals is sorted in ascending order by starti.
+    You are also given an interval newInterval = [start, end] that represents the start and end of
+    another interval.
+
+    Insert newInterval into intervals such that intervals is still sorted in ascending order by starti
+    and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+    Return intervals after the insertion.
+
+    Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+    Output: [[1,5],[6,9]]
+     */
+    int[][] mergeIntervalIII(int[][] intervals, int[] new_interval) {
+        List<int[]> result = new ArrayList<>();
+        for (int[] current_interval : intervals){
+            if (current_interval[1] < new_interval[0]){
+                result.add(current_interval);
+            } else if (new_interval[0] < current_interval[0]) {
+                result.add(new_interval);
+                new_interval = current_interval;
+            } else {
+                new_interval[0] = Math.min(current_interval[0], new_interval[0]);
+                new_interval[1] = Math.max(current_interval[1], new_interval[1]);
+            }
+        }
+
+        result.add(new_interval);
+
+        System.out.println("Result: ");
+        result.stream().forEach(item -> System.out.print(item[0] + "," + item[1] + ", "));
+        return result.toArray(new int[result.size()][]);
+    }
     public static void main(String[] args) {
         MergeIntervals test = new MergeIntervals();
 
@@ -163,11 +200,15 @@ public class MergeIntervals {
         //test.mergeInterval(array);
 
         int[][] intervals = {{1, 3}, {2, 4}, {5, 7}, {6, 8}};
-        test.mergeIntervals(intervals);
+        //test.mergeIntervals(intervals);
 
         int[][] interval1  = {{0,2},{5,10},{13,23},{24,25}};
         int[][] interval2  = {{1,5},{8,12},{15,24},{25,26}};
         //test.mergeIntervalII(interval1, interval2);
+
+        int[][] intervalsx = {{1,2},{3,5},{6,7},{8,10},{12,16}};
+        int[] new_interval = {4, 8};
+        test.mergeIntervalIII(intervalsx, new_interval);
     }
 
 }
