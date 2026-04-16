@@ -5,13 +5,13 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class BST {
+    Node root;
     public static void main(String[] args) {
         int[] input = {50, 30, 55, 20, 35, 32, 53};
         BST tree = new BST();
         for (int i : input) {
             tree.insert(i);
         }
-
 
        // System.out.println("max = " + tree.findMax());
        // System.out.println("min = " + tree.findMin());
@@ -37,6 +37,7 @@ public class BST {
         //tree.zigZagTraversal();
 
         //System.out.println("\n Is BST - " + tree.isBST());
+        System.out.println("Is BST from isBinarySearchTreeNonRecursive: " + tree.isBinarySearchTreeNonRecursive());
 
         //tree.printAllPath();
         //System.out.println("-----------");
@@ -55,7 +56,7 @@ public class BST {
         //tree.leftViewOfTree();
     }
 
-    Node root;
+
 
     void insert(int input) {
         if (root == null) {
@@ -506,6 +507,30 @@ public class BST {
         return currentNode;
     }
 
+    Node createMirrorNonRecursive() {
+        if (root == null) {
+            return root;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+            Node left = current.left;
+            Node right = current.right;
+            current.left = right;
+            current.right = left;
+            if (current.left != null) {
+                queue.add(current.left);
+            }
+            if (current.right != null) {
+                queue.add(current.right);
+            }
+        }
+
+        return root;
+    }
+
     /**
      * Method to check if two trees are mirror image of each other
      *
@@ -615,6 +640,30 @@ public class BST {
         return true;
     }
 
+    boolean isBinarySearchTreeNonRecursive() {
+        if (root == null) return true;
+
+        Node previous = null;
+        Node current = root;
+        Stack<Node> stack = new Stack<>();
+
+        while (current != null || !stack.isEmpty()) {
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            current = stack.pop();
+            if (previous != null && previous.data >= current.data) {
+                return false;
+            }
+
+            previous = current;
+            current = current.right;
+        }
+
+        return true;
+    }
 
     /*
     Given a binary tree, find its minimum depth.The minimum depth is the number of nodes
