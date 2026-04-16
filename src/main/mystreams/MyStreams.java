@@ -1,6 +1,5 @@
 package main.mystreams;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
