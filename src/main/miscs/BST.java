@@ -54,9 +54,12 @@ public class BST {
         //System.out.println("\n Is BST - " + tree.isBST());
 
         //tree.leftViewOfTree();
+       // System.out.println("Min depth - " + tree.minDepthOfBinaryTree());
+        int[] data = {50, 30, 55, 20, 35, 32, 53};
+        System.out.println(tree.isMinHeap(data));
+        data = new int[]{10,20, 30, 40, 50, 60, 70, 80};
+        System.out.println(tree.isMinHeap(data));
     }
-
-
 
     void insert(int input) {
         if (root == null) {
@@ -718,6 +721,31 @@ public class BST {
         }
     }
 
+    int minDepthOfBinaryTree() {
+        if (root == null) return 0;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return depth;
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            depth++;
+        }
+
+        return depth;
+    }
 
     /*
     https://www.geeksforgeeks.org/diameter-of-a-binary-tree-in-on-a-new-method/
@@ -798,9 +826,9 @@ public class BST {
      * @return
      */
     boolean isMinHeap() {
-        //boolean to check if the heap properties is violated or not
-        //where right child should not exist if there is no left child of a given node
-        //and if there is no right child exist, then there should not be any sub sequent left child as well
+        // boolean to check if the heap properties is violated or not. Heap property is violated when
+        // - Right child should not exist if there is no left child in a heap.
+        // - and if there is no right child exist, then there should not be any subsequent left child as well
         boolean null_seen = false;
 
         Queue<Node> queue = new LinkedList<>();
@@ -840,6 +868,22 @@ public class BST {
         return true;
     }
 
+    boolean isMinHeap(int[] data) {
+        System.out.println("Running isMinHeap(int[] data)");
+        int size = data.length;
+        for (int i = 0; i < size / 2; i++) {
+            int left_child_index = 2 * i + 1;
+            int right_child_index = 2 * i + 2;
+            if (left_child_index < size && data[i] > data[left_child_index]) {
+                return false;
+            }
+
+            if (right_child_index < size && data[i] > data[right_child_index]) {
+                return false;
+            }
+        }
+        return true;
+    }
     /*
         Size is the number of nodes that exist in the binary search tree.
      */
@@ -917,39 +961,6 @@ public class BST {
                 }
             }
         }
-    }
-
-    boolean is_min_heap(){
-        boolean is_null_seen = false;
-        Queue<Node> queue = new LinkedList<>();
-
-        queue.add(root);
-
-        while (!queue.isEmpty()){
-            Node x = queue.poll();
-
-            if (x.left != null){
-                if (is_null_seen || x.data >= x.left.data){
-                    return false;
-                }
-
-                queue.add(x.left);
-            } else {
-                is_null_seen = true;
-            }
-
-            if (x.right != null){
-                if (is_null_seen || x.data >= x.right.data){
-                    return false;
-                }
-                queue.add(x.right);
-            } else{
-                is_null_seen = true;
-            }
-        }
-
-        return true;
-
     }
 
     /*
