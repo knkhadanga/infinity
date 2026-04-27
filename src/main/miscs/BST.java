@@ -560,6 +560,57 @@ public class BST {
         return false;
     }
 
+    /**
+     * A tree is considered to be symmetric if the right tree is the mirror image
+     * of left tree.
+     *
+     * @param root
+     * @return
+     */
+    boolean isSymmetric(Node root) {
+        if (root == null) {
+            return true;
+        }
+
+        return isMirror(root.left, root.right);
+    }
+
+    /**
+     * Construct Binary Tree from Preorder and Inorder Traversal
+     * https://www.youtube.com/watch?v=PoBGyrIWisE
+     *
+     * @return
+     */
+    Node constructTreeFromPreAndInorder() {
+        int[] preorder_array = {3, 9, 20, 15, 7}; // this has data root -> left -> right
+        int[] inorder_array = {9, 3, 15, 20, 7}; // this has actual tree structure left -> root -> right
+
+        // step 1 - From in-order data, save the indexes of items
+        Map<Integer, Integer> inorderIndexMap = new HashMap<>();
+        int size = preorder_array.length;
+        for (int i = 0; i < size; i++) {
+            inorderIndexMap.put(inorder_array[i], i);
+        }
+
+        int preorder_count = 0;
+        return buildTreeFromArray(preorder_array, 0, size - 1, preorder_count, inorderIndexMap);
+    }
+
+    Node buildTreeFromArray(int[] preorder_array, int leftIndex, int rightIndex, int index, Map<Integer, Integer> inorderIndexMap) {
+        if (leftIndex > rightIndex) {
+            return null;
+        }
+
+        int data = preorder_array[index++];
+        int indexOfCurrent = inorderIndexMap.get(data);
+
+        Node root = new Node(data);
+        root.left = buildTreeFromArray(preorder_array, leftIndex, indexOfCurrent - 1, index, inorderIndexMap);
+        root.right = buildTreeFromArray(preorder_array, indexOfCurrent + 1, rightIndex, index, inorderIndexMap);
+
+        return root;
+    }
+
     List<String> printAllPath() {
         List<String> allPaths = new ArrayList<>();
 

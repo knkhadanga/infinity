@@ -70,52 +70,44 @@ public class SingleLinkedList {
         lastNodePointer = temp;
     }
 
-    Node deleteFromList(int input) {
-
-        if (head == null) {
-            return null;
+    /**
+     * This method returns the new list after deleting the node which has data
+     *
+     * @param input
+     * @param head
+     * @return
+     */
+    Node deleteFromList(int input, Node head) {
+        // Check from zero'th element
+        // If head has the data, return the next node as head.
+        if (head != null && head.data == input) {
+            return head.next;
         }
 
-        if (head.data == input) {
-            Node temp = head;
-            head = head.next;
-
-            return temp;
-        }
-
-        Node temp = head;
-        Node nextNode = head.next;
-        Node returnNode = null;
-
-        while (nextNode != null) {
-            if (nextNode.data == input) {
-                returnNode = nextNode;
-                temp.next = nextNode.next;
+        // Now check from 1st element in the list until last element.
+        Node current_node = head;
+        while (current_node != null && current_node.next != null) {
+            if (current_node.next.data == input) {
+                current_node.next = current_node.next.next;
                 break;
-            } else {
-                temp = nextNode;
-                nextNode = nextNode.next;
             }
+            current_node = current_node.next;
         }
 
-        return nextNode;
+        return head;
     }
 
-    void reverseList() {
-        Node temp = head;
-        Node x = head;
-        Node y = x.next;
-
-        Node z = null;
-        while (y != null) {
-            z = y.next;
-            y.next = x;
-            x = y;
-            y = z;
+    Node reverseList() {
+        Node prvious = null;
+        Node current = head;
+        while (current != null) {
+            Node next = current.next;
+            current.next = prvious;
+            prvious = current;
+            current = next;
         }
 
-        head = x;
-        temp.next = null;
+        return prvious;
     }
 
     void displayList() {
@@ -127,53 +119,39 @@ public class SingleLinkedList {
         }
     }
 
-    void swapInPairs() {
-        swapInPairs(head);
+    Node swapInPairs() {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        Node dummy_node = new Node(0); // create a dummy node, this will always point to head
+        dummy_node.next = head;
+        Node previous_node = dummy_node; // this node will act as previous pointer to any node pair that is being swapped
+
+        while (previous_node.next != null && previous_node.next.next != null) {
+            // swap nodes in pair now
+            Node first_node = previous_node.next;
+            Node second_node = previous_node.next.next;
+
+            first_node.next = second_node.next;
+            second_node.next = first_node;
+            previous_node.next = second_node; // this will establish the links between pairs
+
+            // after establishing the link, reset its position as previous to next pair to be swapped
+            previous_node = first_node;
+        }
+
+        return dummy_node.next;
     }
 
-    void swapInPairs(Node head) {
-
-        if (head == null) {
-            return;
-        }
-
-        Node tempHead = head.next;
-        Node secondNode = head.next;
-        Node current = head;
-
-        if (secondNode != null) {
-            head.next = secondNode.next;
-            secondNode.next = head;
-        }
-
-        Node prev = current;
-        current = current.next;
-
-        while (current != null) {
-            Node next = current.next;
-            if (next == null) {
-                break;
-            }
-
-            current.next = next.next;
-            next.next = current;
-            prev.next = next;
-            prev = current;
-            current = current.next;
-        }
-
-        this.head = tempHead;
-    }
-
+    // https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
     void removeDuplicateFromSortedList() {
         Node currentNode = head;
 
-        while (currentNode.next != null) {
-
-            if (currentNode.data == currentNode.next.data) {
+        while (currentNode != null) {
+            if ((currentNode.next != null) && (currentNode.data == currentNode.next.data)) {
                 Node temp = currentNode.next;
-
-                currentNode.next = currentNode.next.next;
+                currentNode.next = temp.next;
                 temp.next = null;
             } else {
                 currentNode = currentNode.next;
@@ -273,42 +251,34 @@ public class SingleLinkedList {
         }
     }
 
-    void removeElement(){
+    void removeElement() {
         head = removeElement(head, 22);
     }
+
     /**
-     * Remove all the occurance of element k from the list and returns the new head
+     * Given the head of a linked list and an integer val, remove all the nodes of the linked list
+     * that has Node.val == val, and return the new head.
+     * https://leetcode.com/problems/remove-linked-list-elements/description/
+     *
      * @param head
      * @param k
      * @return
      */
-    Node removeElement(Node head, int k){
-        if (head == null) return null;
-
-        Node temp = head;
-        while (temp != null) {
-            if (temp.data == k){
-                temp = temp.next;
-            } else {
-                break;
-            }
+    Node removeElement(Node head, int k) {
+        while (head != null && head.data == k) {
+            head = head.next; // this will address for use case 1-1-1-1-1-2-3-1-4-1-5 when k = 1
         }
-
-        head = temp;
+        Node current = head;
         Node previous = null;
-        while (temp != null){
-            if (temp.data != k){
-                previous = temp;
-                temp = temp.next;
-            }else{
-                while (temp!= null && temp.data == k){
-                    temp = temp.next;
-                }
-
-                previous.next = temp;
+        while (current != null) {
+            if (current.data != k) {
+                previous = current;
+                current = current.next;
+            } else {
+                previous.next = current.next;
+                current = current.next;
             }
         }
-
         return head;
     }
 }
