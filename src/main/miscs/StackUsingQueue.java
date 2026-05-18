@@ -9,12 +9,13 @@ public class StackUsingQueue<T> {
     Queue<T> queue2 = new LinkedList<>();
 
     void push(T item) {
-        queue2.add(item);
+        queue2.add(item); // always add to queue2
 
         while (!queue1.isEmpty()) {
             queue2.add(queue1.remove());
         }
 
+        // swap the reference
         Queue<T> temp = queue1;
         queue1 = queue2;
         queue2 = temp;

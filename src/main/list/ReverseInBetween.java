@@ -60,4 +60,29 @@ public class ReverseInBetween {
         new_tail.next = current_node;
         return head;
     }
+
+    ListNode reverseBetween2(ListNode head, int left, int right) {
+        if (head == null || (left == right)) {
+            return head;
+        }
+
+        ListNode dummy_node = new ListNode(-1);
+        dummy_node.next = head;
+        ListNode previous = dummy_node;
+
+        for (int i = 0; i < left - 1; i++) {
+            previous = previous.next;
+        }
+
+        ListNode current = previous.next;
+        for (int i = 0; i < right - left; i++) {
+            ListNode nextNode = current.next;
+            current.next = nextNode.next;
+            nextNode.next = current;
+            current = current.next;
+        }
+
+        previous.next = current;
+        return dummy_node.next;
+    }
 }

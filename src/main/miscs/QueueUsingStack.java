@@ -1,12 +1,12 @@
 package main.miscs;
-
+import java.util.Arrays;
+import java.util.Stack;
 /**
  * Implementing queue using two stacks
  */
 public class QueueUsingStack {
-
-    Stack stack1;
-    Stack stack2;
+    Stack<String> stack1;
+    Stack<String> stack2;
 
     QueueUsingStack (){
         stack1 = new Stack();
@@ -28,17 +28,11 @@ public class QueueUsingStack {
         if (stack2.isEmpty()){
             //pop all the data from stack1 and push it to stack2
             while(!stack1.isEmpty()){
-                stack2.push(stack1.pop().strData);
+                stack2.push(stack1.pop());
             }
         }
 
-        Node x = stack2.pop();
-
-        if (x == null){
-            return  null;
-        }
-
-        return x.strData;
+        return stack2.pop();
     }
 
     boolean isEmpty (){
@@ -55,14 +49,14 @@ public class QueueUsingStack {
         }
 
         if (!stack2.isEmpty()){
-            return stack2.peek().strData;
+            return stack2.peek();
         } else {
             //pop all the data from stack1 and push it to stack2
             while(!stack1.isEmpty()){
-                stack2.push(stack1.pop().strData);
+                stack2.push(stack1.pop());
             }
 
-            return stack2.peek().strData;
+            return stack2.peek();
         }
     }
 
@@ -70,13 +64,12 @@ public class QueueUsingStack {
         QueueUsingStack queue = new QueueUsingStack();
         String[] input = {"one", "two", "three", "four", "five"};
 
-        for (String x: input){
-            queue.enqueue(x);
-        }
+        Arrays.stream(input).forEach(queue::enqueue);
 
-        System.out.print(queue.dequeue() + " ");
+        System.out.println(queue.dequeue() + " ");
         queue.enqueue("six");
-        System.out.print(queue.dequeue() + " ");
+        System.out.println(queue.dequeue() + " ");
+        System.out.println("------");
         while(!queue.isEmpty()){
             System.out.print(queue.dequeue() + " ");
         }

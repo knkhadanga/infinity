@@ -32,9 +32,9 @@ public class Mics {
         //lengthOfLongestSubstring("kabcabcc");
         //int[] input = {1, 2, 1, 4, 5, 3, 2, 3, 7, 9, 4};
         //findDuplicatesInArray(input);
-        //MaximumPossibleValue(-19);
+        //maximumPossibleValue(-19);
 
-        int[] sum = {1,-3,2,5,8};
+        int[] sum = {1, -3, 2, 5, 8};
         //subArrayWithMaxSum(sum);
 
         //int[] input = {1, 2, 1, 2, 5, 5, 3, 3, 4};
@@ -112,11 +112,11 @@ public class Mics {
         //checkIfIsomorphic("paper", "title");
 
         int[] array = {3, 1, 4, 1, 5};
-       // findPairs(array, 2);
+        // findPairs(array, 2);
 
         //System.out.println(is_anagram("sad", "das"));
 
-        int[] nums = {23,2,4,6,7};
+        int[] nums = {23, 2, 4, 6, 7};
         System.out.println(checkSubarraySum(nums, 6));
 
     }
@@ -144,36 +144,37 @@ public class Mics {
      */
     static boolean checkSubarraySum(int[] nums, int k) {
 
-        Map<Integer, Integer> map = new HashMap<>(); //to store reminder and index mapping
-        map.put(0, -1); //this will ensure, if first item is multiple of k, then this will take care of it
+        Map<Integer, Integer> map = new HashMap<>(); // to store reminder and it's index mapping
+        map.put(0, -1); // this will ensure, if first item is multiple of k, then this will take care of it
 
+        // the logic here is, if there is a sub-array whose sum is divisible by k,
+        // then, the reminder will repeat.
         int total = 0;
         for (int current_index = 0; current_index < nums.length; current_index++) {
             total += nums[current_index];
             int reminder = total % k;
 
-            if (!map.containsKey(reminder)) {
-                map.put(reminder, current_index);
-            } else {
+            if (map.containsKey(reminder)) {
                 int last_index = map.get(reminder);
                 if ((current_index - last_index) > 1) {
                     return true;
                 }
             }
+            map.put(reminder, current_index);
         }
 
         return false;
     }
 
-    /*
-    Given an unsorted array of integers, find the length of longest increasing subsequence.
-    Input: [10,9,2,5,3,7,101,18] Output: 4
-    Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
-
-    https://www.youtube.com/watch?time_continue=135&v=Ns4LCeeOFS4
-    https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
-    https://leetcode.com/problems/longest-increasing-subsequence/submissions/
-     */
+    /**
+     * Given an unsorted array of integers, find the length of longest increasing subsequence.
+     * Input: [10,9,2,5,3,7,101,18] Output: 4
+     * Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+     * <p>
+     * https://www.youtube.com/watch?time_continue=135&v=Ns4LCeeOFS4
+     * https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+     * https://leetcode.com/problems/longest-increasing-subsequence/submissions/
+     **/
     static void longestIncreasingSubsequence(int[] array) {
         if (array == null || array.length == 0) {
             System.out.println("Length of continuous subsequence is 0");
@@ -259,8 +260,10 @@ public class Mics {
             if (Character.isLetter(ch)) {
                 stb.append(ch);
             } else {
-                output = output + stb.reverse().toString();
-                output = output + ch;
+                if (stb.length() > 0) {
+                    output = output + stb.reverse().toString();
+                    output = output + ch;
+                }
                 stb.setLength(0);
             }
         }
@@ -278,20 +281,22 @@ public class Mics {
 
     e.g.: For input 101, 5 can be inserted at index 0 so that
     the value can be 5101 which is a maximum number.
+    * 999 > 9995
+    * 832 > 8532
+    * -932 > -5932
      */
-    static public void MaximumPossibleValue(int N) {
-        StringBuilder stb = new StringBuilder(String.valueOf(Math.abs(N)));
+    static public void maximumPossibleValue(int N) {
         int sign = (N > 0) ? 1 : -1;
+        StringBuilder stb = new StringBuilder(String.valueOf(Math.abs(N)));
         int length = stb.length();
+        int index = 0;
 
         if (sign > 0) {
-            int index = 0;
             while (index < length && ((stb.charAt(index) - '0') > 5)) {
                 index++;
             }
             stb.insert(index, '5');
         } else {
-            int index = 0;
             while (index < length && ((stb.charAt(index) - '0') < 5)) {
                 index++;
             }
@@ -399,19 +404,19 @@ public class Mics {
      */
     static void findDuplicatesInArrayII() {
         int[] input = {1, 3, 4, 2, 2};
+        // Phase 1: Finding the intersection point in the cycle
         int slow = input[0];
-        int fast = input[input[0]];
+        int fast = input[0];
 
-        //to detect a cycle in the array
-        while (input[slow] != input[fast]) {
-            slow = input[slow];
-            fast = input[input[fast]];
-        }
+        do {
+            slow = input[slow]; // Move one step
+            fast = input[input[fast]]; // Move two steps
+        } while (slow != fast);
 
-        //now detect the point of loop
-        slow = 0; //set it to first index
+        // Phase 2: Finding the entrance to the cycle (the duplicate)
+        slow = input[0]; //set it to first index
         while (slow != fast) {
-            slow = input[slow];
+            slow = input[slow]; // move both by one step
             fast = input[fast];
         }
 
@@ -420,8 +425,8 @@ public class Mics {
 
     /**
      *
-     *  find the sum of contiguous subarray within a one-dimensional
-     *  array of numbers which has the largest sum.
+     * find the sum of contiguous subarray within a one-dimensional
+     * array of numbers which has the largest sum.
      * Efficient apporach
      * https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
      *
@@ -491,7 +496,7 @@ public class Mics {
      * with the length of 3.
      * <p>
      * efficient approach
-     *
+     * <p>
      * https://leetcode.com/problems/longest-substring-without-repeating-characters/
      */
     public static void lengthOfLongestSubstring(String input, String dummy) {
@@ -596,7 +601,12 @@ public class Mics {
     }
 
     /**
-     * Find the missing number in an array
+     * Find the missing number in an array of length N.
+     * Assuming the array may have 0 to N-1 elements and one number is missing in it.
+     * The idea here is:
+     * - XOR operation cancels the numbers if they are same
+     * - If the input array is [0,1,2,4] where 3 is missing
+     * - If it is xored with an array [0,1,2,3,4], then the existing numbers cancels each other leaving 3
      *
      * @param input
      */
@@ -606,25 +616,25 @@ public class Mics {
             return;
         }
 
-        int size = input.length;
-        int originalXOR = input[0];
-        for (int x = 1; x < size; x++) {
+        int current_length = input.length; // this is the current length of given input
+        int originalXOR = input[0]; // get the xor of all numbers where one number is missing
+        for (int x = 1; x < current_length; x++) {
             originalXOR = originalXOR ^ input[x];
         }
 
-        int tempXOR = 1;
-        for (int i = 2; i <= size + 1; i++) {
+        // this would be the current_length + 1 (as 1 number is missing in the array)
+        int new_length = current_length + 1;
+        int tempXOR = 0;  // Get the xor of all numbers between 0 to N-1
+        for (int i = 1; i <= new_length; i++) {
             tempXOR = tempXOR ^ i;
         }
 
         System.out.println(originalXOR + " " + tempXOR);
-
         System.out.println("Missing no = " + (originalXOR ^ tempXOR));
-
     }
 
     /**
-     * Method to print a matrix in spiral order
+     * Print a matrix in spiral order
      *
      * @param matrix
      */
@@ -634,44 +644,40 @@ public class Mics {
             return;
         }
 
-        int noOfrows = matrix.length;
-        int noOfColumn = matrix[0].length;
+        int number_of_rows = matrix.length;
+        int number_of_columns = matrix[0].length;
 
         int top = 0; // first row
-        int bottom = noOfrows - 1; //last row
+        int bottom = number_of_rows - 1; //last row
         int left = 0; //first column
-        int right = noOfColumn - 1; // last column
+        int right = number_of_columns - 1; // last column
         int direction = 0;
 
-        while (top <= bottom && left <= right) {
-
+        while (top <= bottom && left <= right) { // left to right
             if (direction == 0) {
                 for (int x = top; x <= right; x++) {
                     System.out.print(matrix[top][x] + " ");
                 }
                 top++;
-            } else if (direction == 1) {
+            } else if (direction == 1) { // top to bottom
                 for (int x = top; x <= bottom; x++) {
                     System.out.print(matrix[x][right] + " ");
                 }
                 right--;
-            } else if (direction == 2) {
+            } else if (direction == 2) { // right to left
                 for (int x = right; x >= left; x--) {
                     System.out.print(matrix[bottom][x] + " ");
                 }
                 bottom--;
-            } else if (direction == 3) {
+            } else if (direction == 3) { // bottom to top
                 for (int x = bottom; x >= top; x--) {
                     System.out.print(matrix[x][left] + " ");
-                    left++;
                 }
+                left++;
             }
-
             direction = (direction + 1) % 4;
         }
     }
-
-
 
     static boolean isPallindrome(StringBuilder stb) {
         String x = stb.toString();
@@ -680,6 +686,22 @@ public class Mics {
         return x.equals(y);
     }
 
+    /**
+     * Given an integer array nums, return an array answer such that answer[i] is equal to
+     * the product of all the elements of nums except nums[i].
+     * <p>
+     * Example 1:
+     * Input: nums = [1,2,3,4]
+     * Output: [24,12,8,6]
+     * <p>
+     * Example 2:
+     * Input: nums = [-1,1,0,-3,3]
+     * Output: [0,0,9,0,0]
+     * <p>
+     * https://leetcode.com/problems/product-of-array-except-self/description/
+     *
+     * @param input
+     */
     static void productExceptSelf(int[] input) {
         if (input == null || input.length == 0) {
             System.out.println("Invalid input");
@@ -689,7 +711,6 @@ public class Mics {
         int length = input.length;
         int[] output = new int[length];
         Arrays.fill(output, 1);
-
 
         /*
         //brute force approach
@@ -741,31 +762,34 @@ public class Mics {
             return false;
         }
 
-        int noOfRows = matrix.length;
-        int noOfColumns = matrix[0].length;
+        int number_of_rows = matrix.length;
+        int number_of_columns = matrix[0].length;
 
-        if (noOfRows == 0 || noOfColumns == 0) {
+        if (number_of_rows == 0 || number_of_columns == 0) {
             return false;
         }
 
-        int rowIndex = 0;
-        int lastColumn = noOfColumns - 1;
+        int last_column = number_of_columns - 1;
 
-        if (matrix[noOfRows - 1][noOfColumns - 1] < target) {
+        // if last element of matrix is < target; then return false
+        if (matrix[number_of_rows - 1][number_of_columns - 1] < target) {
             // System.out.println("target does not exists.");
             return false;
         }
 
-        while (rowIndex < noOfRows) {
-            if (matrix[rowIndex][lastColumn] >= target) {
+        // Now look for the row in the matrix which may contain the target value
+        int curren_row_index = 0;
+        while (curren_row_index < number_of_rows) {
+            if (matrix[curren_row_index][last_column] >= target) {
                 break;
             }
-            rowIndex++;
+            curren_row_index++;
         }
 
-        for (int i = 0; i < noOfColumns; i++) {
-            if (matrix[rowIndex][i] == target) {
-                // System.out.println("Index where target found - " + rowIndex +"," + i);
+        // now check if the row have the target element present in it.
+        for (int i = 0; i < number_of_columns; i++) {
+            if (matrix[curren_row_index][i] == target) {
+                // System.out.println("Index where target found - " + row_index +"," + i);
                 return true;
             }
         }
@@ -774,10 +798,10 @@ public class Mics {
     }
 
     /*
-    Given an array of integers, all the elements are appear twice
-    but one element which appears only once.
+    Given an array of integers, all the elements are appear twice but one element which appears only once.
     Write an algorithm to find that element.
-    https://algorithms.tutorialhorizon.com/find-the-only-element-in-array-which-appears-only-once/
+    - https://leetcode.com/problems/single-element-in-a-sorted-array/description/
+    - https://algorithms.tutorialhorizon.com/find-the-only-element-in-array-which-appears-only-once/
      */
 
     static void elementAppearOnlyOnce(int[] array) {
@@ -1777,7 +1801,6 @@ rotate the input matrix in-place such that it becomes:
     }
 
 
-
     /*
     Given an array with n objects colored red, white or blue, sort them in-place
     so that objects of the same color are adjacent, with the colors in the order red, white and blue.
@@ -2012,12 +2035,12 @@ rotate the input matrix in-place such that it becomes:
      * you need to find the number of unique k-diff pairs in the array.
      * Here a k-diff pair is defined as an integer pair (i, j),
      * where i and j are both numbers in the array and their absolute difference is k.
-     *
+     * <p>
      * https://leetcode.com/problems/k-diff-pairs-in-an-array/
      * https://www.geeksforgeeks.org/find-a-pair-with-the-given-difference/
      *
      */
-    static int findPairs(int[] array, int k){
+    static int findPairs(int[] array, int k) {
         int no_of_pairs = 0;
         int i = 0;
         int j = 1;
@@ -2026,18 +2049,18 @@ rotate the input matrix in-place such that it becomes:
         Set<List<Integer>> set = new HashSet<>();
         Arrays.sort(array);
 
-        while (i < length && j < length){
+        while (i < length && j < length) {
             int x = array[i];
             int y = array[j];
 
-            if ((i!=j) && Math.abs(x - y) == k){
-                List<Integer> list = Arrays.asList(x,y);
+            if ((i != j) && Math.abs(x - y) == k) {
+                List<Integer> list = Arrays.asList(x, y);
                 Collections.sort(list);
 
                 set.add(list);
                 i++;
                 j++;
-            } else if ( y - x < k){
+            } else if (y - x < k) {
                 j++;
             } else {
                 i++;
@@ -2062,15 +2085,15 @@ rotate the input matrix in-place such that it becomes:
             https://www.youtube.com/watch?v=jKF9AcyBZ6E
      */
 
-    int minimalSumSubarray(int[] array, int sum){
+    int minimalSumSubarray(int[] array, int sum) {
         int left = 0;
         int result = Integer.MAX_VALUE;
         int current_sum = 0;
 
-        for (int i = 0; i < array.length; i++){
+        for (int i = 0; i < array.length; i++) {
             current_sum = current_sum + array[i];
 
-            while(current_sum >= sum){
+            while (current_sum >= sum) {
                 result = Math.min(result, (i + 1) - left);
                 current_sum = current_sum - array[left];
                 left++;
@@ -2093,28 +2116,28 @@ rotate the input matrix in-place such that it becomes:
 
         for (int a = 0; a < length; a++) {
             char x = first.charAt(a);
-            if (map.containsKey(x)){
+            if (map.containsKey(x)) {
                 int count = map.get(x);
                 count++;
-                map.put(x,count);
-            }else{
+                map.put(x, count);
+            } else {
                 map.put(x, 1);
             }
         }
 
         for (int a = 0; a < length; a++) {
             char x = second.charAt(a);
-            if (map.containsKey(x)){
+            if (map.containsKey(x)) {
                 int count = map.get(x);
                 count--;
-                map.put(x,count);
+                map.put(x, count);
             } else {
                 return false;
             }
         }
 
         boolean result = true;
-        for (Map.Entry<Character, Integer> entry : map.entrySet()){
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
             if (entry.getValue() != 0) {
                 result = false;
             }
