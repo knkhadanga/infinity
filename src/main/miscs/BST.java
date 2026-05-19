@@ -919,6 +919,11 @@ public class BST {
         return true;
     }
 
+    /**
+     * The min heap here is represented in an array.
+     * @param data
+     * @return
+     */
     boolean isMinHeap(int[] data) {
         System.out.println("Running isMinHeap(int[] data)");
         int size = data.length;
@@ -1093,8 +1098,7 @@ public class BST {
         if (data == no_node) {
             return null;
         } else {
-            Node root = new Node();
-            root.data = Integer.parseInt(data);
+            Node root = new Node(Integer.parseInt(data));
             root.left = deserialize_helper(queue);
             root.right = deserialize_helper(queue);
             return root;

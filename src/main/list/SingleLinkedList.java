@@ -135,7 +135,10 @@ public class SingleLinkedList {
 
             first_node.next = second_node.next;
             second_node.next = first_node;
-            previous_node.next = second_node; // this will establish the links between pairs
+
+            // this will establish the links between pairs
+            // and point to new head on first iteration
+            previous_node.next = second_node;
 
             // after establishing the link, reset its position as previous to next pair to be swapped
             previous_node = first_node;
@@ -186,18 +189,15 @@ public class SingleLinkedList {
 
         Node head = null;
         Node current = null;
-        int i = 0;
         while (head1 != null && head2 != null) {
             int data = (head1.data > head2.data) ? head2.data : head1.data;
             System.out.println("data = " + data);
             if (head == null) {
-                head = new Node();
-                head.data = data;
+                head = new Node(data);
                 current = head;
             } else {
-                current.next = new Node();
+                current.next = new Node(data);
                 current = current.next;
-                current.data = data;
             }
 
             if (head1.data > head2.data) {
